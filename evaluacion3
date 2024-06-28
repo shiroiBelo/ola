@@ -1,0 +1,63 @@
+import csv
+
+def agregar_producto():
+    with open('inventario.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        id_producto = input("Ingrese el ID del producto: ")
+        nombre_producto = input("Ingrese el nombre del producto: ")
+        categoria_producto = input("Ingrese la categoría del producto (Electrónica, Textil, Calzado): ")
+        precio_producto = input("Ingrese el precio del producto: ")
+        writer.writerow([id_producto, nombre_producto, categoria_producto, precio_producto])
+    print("Producto agregado con éxito!")
+
+def leer_inventario():
+    with open('inventario.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        print("Inventario actual:")
+        for row in reader:
+            print(row)
+
+def clasificacion_productos():
+    electronicos = []
+    textiles = []
+    calzados = []
+    with open('inventario.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  
+        for row in reader:
+            if row[2] == "Electrónica":
+                electronicos.append(row)
+            elif row[2] == "Textil":
+                textiles.append(row)
+            elif row[2] == "Calzado":
+                calzados.append(row)
+    with open('clasificacion_productos.txt', 'w') as txtfile:
+        txtfile.write("Electrónica:\n")
+        for producto in electronicos:
+            txtfile.write(f"ID: {producto[0]}, Nombre: {producto[1]}, Precio: {producto[3]}\n")
+        txtfile.write("\nTextil:\n")
+        for producto in textiles:
+            txtfile.write(f"ID: {producto[0]}, Nombre: {producto[1]}, Precio: {producto[3]}\n")
+        txtfile.write("\nCalzado:\n")
+        for producto in calzados:
+            txtfile.write(f"ID: {producto[0]}, Nombre: {producto[1]}, Precio: {producto[3]}\n")
+    print("Productos clasificados y exportados con éxito!")
+
+while True:
+    print("Menú de inventario:")
+    print("1. Agregar productos al inventario")
+    print("2. Leer el inventario")
+    print("3. Clasificar y exportar productos")
+    print("4. Salir")
+    opcion = input("Ingrese una opción: ")
+    if opcion == "1":
+        agregar_producto()
+    elif opcion == "2":
+        leer_inventario()
+    elif opcion == "3":
+        clasificacion_productos()
+    elif opcion == "4":
+        print("Adiós!")
+        break
+    else:
+        print("Opción inválida. Intente nuevamente.")
